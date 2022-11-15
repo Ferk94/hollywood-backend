@@ -10,7 +10,7 @@ router.get('/:id', (req, res, next) => {
 
     const { id } = req.params;
     const today = new Date();
-    const now = today.toLocaleString();
+    const now = today.getTime()
     db.collection(tableName).doc(id).get()
     .then(doc => {
         jwt.sign({doc}, 'secretKey', {expiresIn: 300}, (err, token) => {
