@@ -3,25 +3,30 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const {db} = require('../../firebase/firebaseConfig');
 const tableName = require('../../firebase/firebaseKey');
+const { v4: uuidv4 } = require('uuid');
 
 
 
 router.get('/:id', (req, res, next) => {
 
     const { id } = req.params;
-    const today = new Date();
-    const now = today.getTime()
-    db.collection(tableName).doc(id).get()
-    .then(doc => {
-        jwt.sign({doc}, 'secretKey', {expiresIn: 300}, (err, token) => {
-            let hash = token.slice(0, 200)
-            res.json({
-                hash, now
-            })
-        })
-    })
 
-    .catch((err) => next(err))
+    if(id){
+        const today = new Date();
+        const now = today.getTime()
+
+        //opcion con math.random
+        let random = parseInt(Math.random().toString().split('.')[1])
+
+        //opcion con uuid
+
+        let uniqueId = uuidv4().split('-').join('')
+        res.json({uniqueId, now})
+
+    }else {
+        next({msg: 'fatal error'})
+    }
+    
 })
 
 
